@@ -1,19 +1,33 @@
-import React, {Component} from 'react';
-import {Route, Link} from 'react-router-dom';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import React, { Component } from 'react';
+import { Route, Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NoteListNav from '../NoteListNav/NoteListNav';
 import NotePageNav from '../NotePageNav/NotePageNav';
 import NoteListMain from '../NoteListMain/NoteListMain';
 import NotePageMain from '../NotePageMain/NotePageMain';
 import './App.css';
-import {NoteContext} from '../NoteContext'
+import { NoteContext } from '../NoteContext'
 
 class App extends Component {
-    
+
     state = {
-        deleteNote: () => {},
-        addNotes: () => {},
-        addFolders: () => {},
+        deleteNote: (noteId) => {
+            fetch(`http://localhost:9090/notes/${noteId}`, {
+                method: 'DELETE',
+                headers: { 'content-type': 'application/json' },
+            })
+            .then( () => {
+                this.setState({
+                    notes: this.state.notes.filter( (note) => note.id !== noteId
+                    )
+                })
+            })
+            .catch( (e) => {
+                console.log(e)
+            })
+        },
+        addNotes: () => { },
+        addFolders: () => { },
         notes: [],
         folders: []
     };
@@ -25,16 +39,16 @@ class App extends Component {
         // fake date loading from API call
         Promise.all([fetch('http://localhost:9090/folders'),
         fetch('http://localhost:9090/notes')])
-        .then(responses => {
-            return Promise.all([responses[0].json(),responses[1].json()])
-        })
-        .then(responseJsons => { 
-            this.setState({
-                notes:responseJsons[1],
-                folders:responseJsons[0]
-            }
-            )
-        })
+            .then(responses => {
+                return Promise.all([responses[0].json(), responses[1].json()])
+            })
+            .then(responseJsons => {
+                this.setState({
+                    notes: responseJsons[1],
+                    folders: responseJsons[0]
+                }
+                )
+            })
 
     }
 
@@ -76,8 +90,8 @@ class App extends Component {
                         key={path}
                         path={path}
                         render={routeProps => {
-                            const {folderId} = routeProps.match.params;
-                            
+                            const { folderId } = routeProps.match.params;
+
                             return (
                                 <NoteListMain
                                     {...routeProps}
@@ -90,7 +104,7 @@ class App extends Component {
                 <Route
                     path="/note/:noteId"
                     render={routeProps => {
-                        const {noteId} = routeProps.match.params;
+                        const { noteId } = routeProps.match.params;
                         return <NotePageMain {...routeProps} noteId={noteId} />;
                     }}
                 />
@@ -100,7 +114,7 @@ class App extends Component {
 
     render() {
         return (
-            <NoteContext.Provider value = {
+            <NoteContext.Provider value={
                 this.state
             }>
                 <div className="App">
@@ -113,7 +127,7 @@ class App extends Component {
                     </header>
                     <main className="App__main">{this.renderMainRoutes()}</main>
                 </div>
-            </NoteContext.Provider>    
+            </NoteContext.Provider>
         );
     }
 }
