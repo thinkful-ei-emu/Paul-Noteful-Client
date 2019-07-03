@@ -8,16 +8,37 @@ import NotePageMain from '../NotePageMain/NotePageMain';
 import dummyStore from '../dummy-store';
 import {getNotesForFolder, findNote, findFolder} from '../notes-helpers';
 import './App.css';
+import {NoteContext} from '../NoteContext'
 
 class App extends Component {
+    
     state = {
+        setNotes: () => {},
+        setFolders: () => {},
         notes: [],
         folders: []
     };
 
+
+
+
     componentDidMount() {
         // fake date loading from API call
-        setTimeout(() => this.setState(dummyStore), 600);
+        Promise.all([fetch('http://localhost:9090/folders'),
+        fetch('http://localhost:9090/notes')])
+        .then(responses => {
+            return [responses[0].json(),responses[1].json()]
+        })
+        .then(responseJsons => { 
+            console.log(responseJsons)
+            this.setState({
+                notes:responseJsons[1],
+                folders:responseJsons[0]
+            },
+            console.log(this.state)
+            )
+        })
+
     }
 
     renderNavRoutes() {
@@ -31,8 +52,8 @@ class App extends Component {
                         path={path}
                         render={routeProps => (
                             <NoteListNav
-                                folders={folders}
-                                notes={notes}
+                                // folders={folders}
+                                // notes={notes}
                                 {...routeProps}
                             />
                         )}
@@ -91,16 +112,20 @@ class App extends Component {
 
     render() {
         return (
-            <div className="App">
-                <nav className="App__nav">{this.renderNavRoutes()}</nav>
-                <header className="App__header">
-                    <h1>
-                        <Link to="/">Noteful</Link>{' '}
-                        <FontAwesomeIcon icon="check-double" />
-                    </h1>
-                </header>
-                <main className="App__main">{this.renderMainRoutes()}</main>
-            </div>
+            <NoteContext.Provider value = {
+                this.state
+            }>
+                <div className="App">
+                    <nav className="App__nav">{this.renderNavRoutes()}</nav>
+                    <header className="App__header">
+                        <h1>
+                            <Link to="/">Noteful</Link>{' '}
+                            <FontAwesomeIcon icon="check-double" />
+                        </h1>
+                    </header>
+                    <main className="App__main">{this.renderMainRoutes()}</main>
+                </div>
+            </NoteContext.Provider>    
         );
     }
 }
