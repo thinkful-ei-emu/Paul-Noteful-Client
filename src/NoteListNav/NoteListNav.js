@@ -1,10 +1,11 @@
 import React from 'react'
 import { NavLink, Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import CircleButton from '../CircleButton/CircleButton'
-import { countNotesForFolder } from '../notes-helpers'
+import { countNotesForFolder } from '../notes-helpers';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import CircleButton from '../CircleButton/CircleButton';
 import './NoteListNav.css'
-import { NoteContext } from '../NoteContext'
+import { NoteContext } from '../NoteContext';
+import PropTypes from 'prop-types';
 
 
 export default class NoteListNav extends React.Component {
@@ -49,4 +50,11 @@ export default class NoteListNav extends React.Component {
 
 NoteListNav.defaultProps = {
   folders: []
+}
+
+
+NoteListNav.propTypes={
+    history: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired
 }

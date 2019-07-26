@@ -3,7 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import CircleButton from '../CircleButton/CircleButton'
 import {findNote, findFolder} from '../notes-helpers';
 import {NoteContext} from '../NoteContext'
-import './NotePageNav.css'
+import './NotePageNav.css';
+import PropTypes from 'prop-types';
 
 export default class NotePageNav extends React.Component{
   static contextType=NoteContext
@@ -36,4 +37,11 @@ NotePageNav.defaultProps = {
   history: {
     goBack: () => { }
   }
+}
+
+NotePageNav.propTypes={
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  noteId: PropTypes.string.isRequired
 }

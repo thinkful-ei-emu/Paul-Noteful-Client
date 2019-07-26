@@ -4,6 +4,7 @@ import { format } from 'date-fns'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {NoteContext} from '../NoteContext';
 import './Note.css'
+import PropTypes from 'prop-types';
 
 export default class NoteFromNotePage extends React.Component{
   
@@ -37,4 +38,11 @@ export default class NoteFromNotePage extends React.Component{
       </div>
     </div>
   )}
+}
+
+NoteFromNotePage.propTypes={
+  history: PropTypes.object.isRequired,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  modified: PropTypes.isRequired
 }

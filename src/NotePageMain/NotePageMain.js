@@ -2,7 +2,8 @@ import React from 'react'
 import NoteFromNotePage from '../Note/NoteFromNotePage'
 import { NoteContext } from '../NoteContext';
 import {findNote} from '../notes-helpers';
-import './NotePageMain.css'
+import './NotePageMain.css';
+import PropTypes from 'prop-types';
 
 export default class NotePageMain extends React.Component {
   static contextType=NoteContext
@@ -31,4 +32,11 @@ NotePageMain.defaultProps = {
   note: {
     content: '',
   }
+}
+
+NotePageMain.propTypes={
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  noteId: PropTypes.string.isRequired
 }
