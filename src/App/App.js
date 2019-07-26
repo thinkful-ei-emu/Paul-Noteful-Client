@@ -47,6 +47,7 @@ class App extends Component {
             })
             .then( res=>res.json())
             .then(resJson=>{
+                console.log(resJson);
                 this.setState({
                     notes:resJson
                 });
@@ -67,7 +68,6 @@ class App extends Component {
             })
             .then(res=>res.json())
             .then( (resFolders)=>{
-                console.log(resFolders)
                 this.setState({
                     folders:resFolders
                 });
