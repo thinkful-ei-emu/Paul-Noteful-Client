@@ -10,6 +10,9 @@ import { countNotesForFolder } from '../notes-helpers';
 export default class AddFolderNav extends React.Component{
   static contextType=NoteContext
   render(){
+    if(this.props.isLoading){
+      return <p>loading</p>
+    }
     const { notes, folders } = this.context
     
     return (
@@ -25,7 +28,7 @@ export default class AddFolderNav extends React.Component{
         <br />
         Back
       </CircleButton>
-        <ul className='NoteListNav__list'>
+        {folders.length!==0 && <ul className='NoteListNav__list'>
 
           {folders.map(folder =>
             <li key={folder.id}>
@@ -40,7 +43,7 @@ export default class AddFolderNav extends React.Component{
               </NavLink>
             </li>
           )}
-        </ul>
+        </ul>}
       </div>
     )
   }

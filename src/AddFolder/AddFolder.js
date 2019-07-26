@@ -21,7 +21,7 @@ class AddFolder extends React.Component{
     } else if (name.length < 3) {
       return 'Name must be at least 3 characters long';
     }
-    else if(folders.find(folder=>folder.name===name)){
+    else if(folders.length!==0 && folders.find(folder=>folder.name===name)){
       return 'Name already taken by another folder';
     }
   }
@@ -38,6 +38,9 @@ class AddFolder extends React.Component{
   }
   static contextType=NoteContext
   render(){
+    if(this.props.isLoading){
+      return <p>loading</p>
+    }
     return(
       <form className='new-folder-form Noteful-form' onSubmit={e=> this.handleSubmit(e,this.context.folders,this.context.addFolder)}>
         <label htmlFor="folderName">Name of new folder:</label>

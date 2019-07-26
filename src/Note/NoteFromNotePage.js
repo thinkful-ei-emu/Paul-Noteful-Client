@@ -44,5 +44,5 @@ NoteFromNotePage.propTypes={
   history: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  modified: PropTypes.isRequired
+  modified: PropTypes.string.isRequired
 }

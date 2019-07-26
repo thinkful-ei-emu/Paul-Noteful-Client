@@ -12,8 +12,14 @@ export default class NoteListNav extends React.Component {
   static contextType = NoteContext;
   static defaultProps = {folders: []}
   render() {
+    if(this.props.isLoading){
+      return <p>loading</p>
+    }
     const { notes, folders } = this.context
     return (
+      <>{
+        folders.length!==0 &&
+      
       <div className='NoteListNav'>
         <ul className='NoteListNav__list'>
 
@@ -44,6 +50,8 @@ export default class NoteListNav extends React.Component {
         </CircleButton>
         </div>
       </div>
+      }
+      </>
     )
   }
 }

@@ -11,6 +11,9 @@ import { countNotesForFolder } from '../notes-helpers';
 export default class AddNoteNav extends React.Component{
   static contextType=NoteContext
   render(){
+    if(this.props.isLoading){
+      return <p>loading</p>
+    }
     const {notes,folders} =this.context;
     const folder = findFolder(folders, this.props.folderId);
     const conditional = folder? ( 

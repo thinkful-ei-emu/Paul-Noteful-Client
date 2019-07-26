@@ -41,7 +41,6 @@ class AddNote extends React.Component{
   }
   validateContent(fieldValue) {
     const content = this.state.content.trim();
-    
     if (content.length < 3 && content.length >0) {
       return 'If content exists, it must be at least 3 characters long';
     }
@@ -49,6 +48,9 @@ class AddNote extends React.Component{
   
   validateFolder(folders){
     if(this.state.folderId){
+      return;
+    }
+    if(folders.length===0){
       return;
     }
     let folder=folders.find(folder=> folder.name.toLowerCase()===this.state.folderName.trim().toLowerCase());
@@ -72,10 +74,13 @@ class AddNote extends React.Component{
     let folderId= this.state.givenFolderId? 
       this.state.folderId : 
       this.context.folders.find(folder=> folder.name.toLowerCase()===this.state.folderName.trim().toLowerCase()).id;
-    this.context.addNote(this.state.name,this.state.content,folderId)
+    this.context.addNote(this.state.name,this.state.content?this.state.content:'',folderId)
 
   }
   render(){
+    if(this.props.isLoading){
+      return <p>loading</p>
+    }
     const folders=this.context.folders;
     return(
       <form className='new-note-form Noteful-form' onSubmit={e=> this.handleSubmit(e)}>

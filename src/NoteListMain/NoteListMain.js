@@ -11,13 +11,17 @@ import PropTypes from 'prop-types';
 export default class NoteListMain extends React.Component {
   static contextType=NoteContext
   render() {
+    if(this.props.isLoading){
+      return <p>loading</p>
+    }
     const linkToAddNote= this.props.folderId? `/add-note/${this.props.folderId}` : '/add-note';
     const notesForFolder = getNotesForFolder(
       this.context.notes,
       this.props.folderId
     );
     return (
-      <section className='NoteListMain'>
+      <>
+      {notesForFolder &&<section className='NoteListMain'>
         <ul>
           {notesForFolder.map(note =>
             <li key={note.id}>
@@ -41,7 +45,9 @@ export default class NoteListMain extends React.Component {
             Note
         </CircleButton>
         </div>
-      </section>
+      </section>}
+      </>
+      
     )
   }
 }

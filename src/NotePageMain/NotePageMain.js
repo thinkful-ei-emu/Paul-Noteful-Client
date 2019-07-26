@@ -8,9 +8,17 @@ import PropTypes from 'prop-types';
 export default class NotePageMain extends React.Component {
   static contextType=NoteContext
   render() {
-    
+    /* if(!this.context.notes ||this.context.notes.length===0){
+      return <p>loading</p>;
+    } */
+    if(this.props.isLoading){
+      return <p>loading</p>
+    }
+    console.log(this.props.noteId)
+    console.log(this.context.notes)
     const note = findNote(this.context.notes, this.props.noteId);
-    return (
+    return (<>
+      {note?     
       <section className='NotePageMain'>
         <NoteFromNotePage
           id={note.id}
@@ -24,13 +32,9 @@ export default class NotePageMain extends React.Component {
           )}
         </div>
       </section>
+          : <> </>}
+        </>
     )
-  }
-}
-
-NotePageMain.defaultProps = {
-  note: {
-    content: '',
   }
 }
 

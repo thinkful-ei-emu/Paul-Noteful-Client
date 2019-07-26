@@ -16,6 +16,9 @@ class App extends Component {
 
     state = {
         deleteNote: (noteId) => {
+            this.setState({
+                isLoading:true
+            });
             fetch(`http://localhost:9090/notes/${noteId}`, {
                 method: 'DELETE',
                 headers: { 'content-type': 'application/json' },
@@ -23,7 +26,8 @@ class App extends Component {
             .then( () => {
                 this.setState({
                     notes: this.state.notes.filter( (note) => note.id !== noteId
-                    )
+                    ),
+                    isLoading:false
                 })
             })
             .catch( (e) => {
@@ -43,12 +47,17 @@ class App extends Component {
                 headers: { 'content-type': 'application/json' },
             })
             .then( (res) => {
+                
+                this.setState({
+                    isLoading:true
+                });
                 return fetch('http://localhost:9090/notes')
             })
             .then( res=>res.json())
             .then(resJson=>{
                 this.setState({
-                    notes:resJson
+                    notes:resJson,
+                    isLoading:false
                 });
             })
             .catch( (e) => {
@@ -63,24 +72,27 @@ class App extends Component {
                 headers: { 'content-type': 'application/json' },
             })
             .then( (res) => {
+                
+                this.setState({
+                    isLoading:true
+                });
                 return fetch('http://localhost:9090/folders');
             })
             .then(res=>res.json())
             .then( (resFolders)=>{
                 this.setState({
-                    folders:resFolders
+                    folders:resFolders,
+                    isLoading:false
                 });
             })
             .catch( (e) => {
                 console.log(e)
             })
         },
+        isLoading:true,
         notes: [],
         folders: []
     };
-
-
-
 
     componentDidMount() {
         Promise.all([fetch('http://localhost:9090/folders'),
@@ -91,7 +103,8 @@ class App extends Component {
             .then(responseJsons => {
                 this.setState({
                     notes: responseJsons[1],
-                    folders: responseJsons[0]
+                    folders: responseJsons[0],
+                    isLoading:false,
                 }
                 )
             })
@@ -111,6 +124,7 @@ class App extends Component {
                                 // folders={folders}
                                 // notes={notes}
                                 {...routeProps}
+                                isLoading={this.state.isLoading}
                             />
                         )}
                     />
@@ -118,17 +132,17 @@ class App extends Component {
                 <Route
                     path="/note/:noteId"
                     render={routeProps => {
-                        return <NotePageNav {...routeProps} noteId={routeProps.match.params.noteId} />;
+                        return <NotePageNav {...routeProps} noteId={routeProps.match.params.noteId} isLoading={this.state.isLoading} />;
                     }}
                 />
                 <Route path="/add-folder" render={routeProps => {
-                        return <AddFolderNav {...routeProps} />;
+                        return <AddFolderNav {...routeProps} isLoading={this.state.isLoading} />;
                     }} />
                 <Route path="/add-note/:folderId" render={routeProps => {
-                        return <AddNoteNav {...routeProps} folderId={routeProps.match.params.folderId} />;
+                        return <AddNoteNav isLoading={this.state.isLoading} {...routeProps} folderId={routeProps.match.params.folderId} />;
                     }} />
                 <Route exact path="/add-note" render={routeProps => {
-                        return <AddNoteNav {...routeProps} />;
+                        return <AddNoteNav isLoading={this.state.isLoading} {...routeProps} />;
                     }} />
             </>
         );
@@ -148,7 +162,7 @@ class App extends Component {
                             return (
                                 <NoteListMain
                                     {...routeProps}
-                                    folderId={folderId}
+                                    folderId={folderId}  isLoading={this.state.isLoading}
                                 />
                             );
                         }}
@@ -158,25 +172,25 @@ class App extends Component {
                     path="/note/:noteId"
                     render={routeProps => {
                         const { noteId } = routeProps.match.params;
-                        return <NotePageMain {...routeProps} noteId={noteId} />;
+                        return <NotePageMain {...routeProps} noteId={noteId} isLoading={this.state.isLoading} />;
                     }}
                 />
                 <Route
                     path="/add-folder"
                     exact
                     render={routeProps => {
-                        return <AddFolder {...routeProps} />;
+                        return <AddFolder isLoading={this.state.isLoading} {...routeProps} />;
                     }}
                 />
                 <Route exact path="/add-note"
                     render={routeProps => {
-                        return <AddNote {...routeProps} folderId={routeProps.match.params.folderId}/>;    
+                        return <AddNote {...routeProps} isLoading={this.state.isLoading}  folderId={routeProps.match.params.folderId}/>;    
                     }} 
                 />  
                 <Route
                     path="/add-note/:folderId"
                     render={routeProps => {
-                        return <AddNote {...routeProps} folderId={routeProps.match.params.folderId}/>;
+                        return <AddNote {...routeProps} folderId={routeProps.match.params.folderId}isLoading={this.state.isLoading}/>;
                     }}
                 />
             </>
