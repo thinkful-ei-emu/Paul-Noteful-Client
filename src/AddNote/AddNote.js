@@ -41,6 +41,7 @@ class AddNote extends React.Component{
   }
   validateContent(fieldValue) {
     const content = this.state.content.trim();
+    
     if (content.length < 3 && content.length >0) {
       return 'If content exists, it must be at least 3 characters long';
     }
