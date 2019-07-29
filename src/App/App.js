@@ -11,6 +11,7 @@ import AddFolder from '../AddFolder/AddFolder';
 import AddFolderNav from '../AddFolderNav/AddFolderNav';
 import AddNote from '../AddNote/AddNote'
 import AddNoteNav from'../AddNoteNav/AddNoteNav';
+import config from '../config';
 
 class App extends Component {
 
@@ -19,9 +20,9 @@ class App extends Component {
             this.setState({
                 isLoading:true
             });
-            fetch(`http://localhost:9090/notes/${noteId}`, {
+            fetch(`${config.API_ENDPOINT}/notes/${noteId}`, {
                 method: 'DELETE',
-                headers: { 'content-type': 'application/json' },
+                headers: { 'content-type': 'application/json', 'Authorization':`Bearer ${config.API_KEY}` },
             })
             .then( () => {
                 this.setState({
@@ -41,17 +42,17 @@ class App extends Component {
                 content: noteContent,
                 folderId: folderId
             });
-            fetch(`http://localhost:9090/notes`, {
+            fetch(`${config.API_ENDPOINT}/notes`, {
                 method: 'POST',
                 body: noteJson,
-                headers: { 'content-type': 'application/json' },
+                headers: { 'content-type': 'application/json', 'Authorization':`Bearer ${config.API_KEY}` },
             })
             .then( (res) => {
                 
                 this.setState({
                     isLoading:true
                 });
-                return fetch('http://localhost:9090/notes')
+                return fetch(`${config.API_ENDPOINT}/notes`,{headers:{'Authorization':`Bearer ${config.API_KEY}`}})
             })
             .then( res=>res.json())
             .then(resJson=>{
@@ -66,17 +67,17 @@ class App extends Component {
         },
         addFolder: (folderName) => { 
             const folderJson = JSON.stringify({name:folderName});
-            fetch(`http://localhost:9090/folders`, {
+            fetch(`${config.API_ENDPOINT}/folders`, {
                 method: 'POST',
                 body: folderJson,
-                headers: { 'content-type': 'application/json' },
+                headers: { 'content-type': 'application/json', 'Authorization':`Bearer ${config.API_KEY}` },
             })
             .then( (res) => {
                 
                 this.setState({
                     isLoading:true
                 });
-                return fetch('http://localhost:9090/folders');
+                return fetch(`${config.API_ENDPOINT}/folders`,{headers:{'Authorization':`Bearer ${config.API_KEY}`}});
             })
             .then(res=>res.json())
             .then( (resFolders)=>{
@@ -95,8 +96,8 @@ class App extends Component {
     };
 
     componentDidMount() {
-        Promise.all([fetch('http://localhost:9090/folders'),
-        fetch('http://localhost:9090/notes')])
+        Promise.all([fetch(`${config.API_ENDPOINT}/folders`,{headers:{'Authorization':`Bearer ${config.API_KEY}`}}),
+        fetch(`${config.API_ENDPOINT}/notes`,{headers:{'Authorization':`Bearer ${config.API_KEY}`}})])
             .then(responses => {
                 return Promise.all([responses[0].json(), responses[1].json()])
             })

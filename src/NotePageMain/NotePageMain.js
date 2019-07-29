@@ -14,8 +14,6 @@ export default class NotePageMain extends React.Component {
     if(this.props.isLoading){
       return <p>loading</p>
     }
-    console.log(this.props.noteId)
-    console.log(this.context.notes)
     const note = findNote(this.context.notes, this.props.noteId);
     return (<>
       {note?     
