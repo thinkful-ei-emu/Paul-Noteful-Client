@@ -2,6 +2,7 @@ import React from 'react';
 import { NoteContext } from '../NoteContext';
 import ValidationError from '../ValidationError/ValidationError'
 import '../NotefulForm/NotefulForm.css';
+import PropTypes from 'prop-types'
 
 class AddFolder extends React.Component{
   constructor(props) {
@@ -54,5 +55,12 @@ class AddFolder extends React.Component{
     );
   }
 }
+
+AddFolder.propTypes={
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+}
+
 
 export default AddFolder;

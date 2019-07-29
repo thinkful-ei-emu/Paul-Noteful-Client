@@ -2,7 +2,7 @@ import React from 'react';
 import { NoteContext } from '../NoteContext';
 import ValidationError from '../ValidationError/ValidationError'
 import {findFolder} from '../notes-helpers';
-
+import PropTypes from 'prop-types';
 import '../NotefulForm/NotefulForm.css';
  
 
@@ -112,6 +112,13 @@ class AddNote extends React.Component{
       </form>
     );
   }
+}
+
+AddNote.propTypes={
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  folderId: PropTypes.string
 }
 
 export default AddNote;
