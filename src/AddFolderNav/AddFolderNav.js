@@ -28,9 +28,9 @@ export default class AddFolderNav extends React.Component{
         <br />
         Back
       </CircleButton>
-        {folders.length!==0 && <ul className='NoteListNav__list'>
+        {<ul className='NoteListNav__list'>
 
-          {folders.map(folder =>
+          {folders && folders.map(folder =>
             <li key={folder.id}>
               <NavLink
                 className='NoteListNav__folder-link'

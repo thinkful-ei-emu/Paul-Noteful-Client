@@ -18,12 +18,12 @@ export default class NoteListNav extends React.Component {
     const { notes, folders } = this.context
     return (
       <>{
-        folders.length!==0 &&
+         
       
       <div className='NoteListNav'>
         <ul className='NoteListNav__list'>
 
-          {folders.map(folder =>
+          {folders.length!==0 && folders.map(folder =>
             <li key={folder.id}>
               <NavLink
                 className='NoteListNav__folder-link'

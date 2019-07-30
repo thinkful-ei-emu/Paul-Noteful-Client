@@ -22,7 +22,7 @@ export default class AddNoteNav extends React.Component{
       </h3>
     )  :    <ul className='NoteListNav__list'>
 
-    {folders.map(folder =>
+    {folders && folders.map(folder =>
       <li key={folder.id}>
         <NavLink
           className='NoteListNav__folder-link'

@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 export default class NotePageNav extends React.Component{
   static contextType=NoteContext
   render(){
-    if(!this.context.notes ||this.context.notes.length===0){
+    if(this.props.isLoading){
       return <p>loading</p>;
     }
     const note = findNote(this.context.notes, this.props.noteId) || {};
