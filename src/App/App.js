@@ -40,7 +40,7 @@ class App extends Component {
                 name: noteName,
                 modified: new Date(),
                 content: noteContent,
-                folderId: folderId
+                folderid: folderId
             });
             fetch(`${config.API_ENDPOINT}/notes`, {
                 method: 'POST',
@@ -56,6 +56,8 @@ class App extends Component {
             })
             .then( res=>res.json())
             .then(resJson=>{
+                resJson["folderId"]=resJson.folderid;
+                delete resJson["folderid"];
                 this.setState({
                     notes:resJson,
                     isLoading:false
@@ -103,7 +105,11 @@ class App extends Component {
             })
             .then(responseJsons => {
                 this.setState({
-                    notes: responseJsons[1],
+                    notes: responseJsons[1].map(note=>{
+                        note["folderId"]=note.folderid;
+                        delete note["folderid"];
+                        return note;
+                    }),
                     folders: responseJsons[0],
                     isLoading:false,
                 }
