@@ -56,10 +56,12 @@ class App extends Component {
             })
             .then( res=>res.json())
             .then(resJson=>{
-                resJson["folderId"]=resJson.folderid;
-                delete resJson["folderid"];
                 this.setState({
-                    notes:resJson,
+                    notes:resJson.map(note=>{
+                        note["folderId"]=note.folderid;
+                        delete note["folderid"];
+                        return note;
+                    }),
                     isLoading:false
                 });
             })

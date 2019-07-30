@@ -33,7 +33,7 @@ export default class NoteListMain extends React.Component {
             </li>
           )}
         </ul>
-        {<div className='NoteListMain__button-container'>
+        {this.context.folders.length!==0 && <div className='NoteListMain__button-container'>
           <CircleButton
             tag={Link}
             to={linkToAddNote}
